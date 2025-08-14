@@ -1,3 +1,27 @@
+interface GeoProperties {
+  asn: number;
+  countryName: string;
+  countryCodeAlpha2: string;
+  countryCodeAlpha3: string;
+  countryCodeNumeric: string;
+  regionName: string;
+  regionCode: string;
+  cityName: string;
+  latitude: number;
+  longitude: number;
+  cisp: string;
+}
+
+interface IncomingRequestEoProperties {
+  geo: GeoProperties;
+  uuid: string;
+  clientIp: string;
+}
+
+interface EORequest extends Request {
+  readonly eo: IncomingRequestEoProperties;
+}
+
 // 创建首页 HTML
 function createHomePage(): Response {
   const html = `<!DOCTYPE html>
@@ -201,6 +225,7 @@ function createHomePage(): Response {
     status: 200,
     headers: {
       'Content-Type': 'text/html; charset=UTF-8',
+      'X-Robots-Tag': 'noindex, nofollow, nosnippet, noarchive',
     }
   });
 }
@@ -219,8 +244,20 @@ export async function onRequestOptions() {
 }
 
 // 处理根路径请求 - 显示首页
-export async function onRequest({ request }) {
+export async function onRequest({ request }: { request: EORequest }) {
   if (request.method === 'GET') {
+    // 检查客户端地理位置，如果是中国IP则返回404
+    const geo = request.eo?.geo;
+    if (geo && geo.countryCodeAlpha2 === 'CN') {
+      return new Response('Not Found', {
+        status: 404,
+        headers: {
+          'Content-Type': 'text/plain; charset=UTF-8',
+          'X-Robots-Tag': 'noindex, nofollow, nosnippet, noarchive',
+        }
+      });
+    }
+    
     return createHomePage();
   }
   

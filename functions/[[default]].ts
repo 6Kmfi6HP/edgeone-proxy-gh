@@ -200,6 +200,9 @@ export async function onRequest({ request }: { request: EORequest }) {
     newResponse.headers.set('Access-Control-Allow-Origin', '*');
     newResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     newResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    
+    // 禁止搜索引擎索引代理内容
+    newResponse.headers.set('X-Robots-Tag', 'noindex, nofollow, nosnippet, noarchive');
 
     // 对于某些内容类型，设置合适的 Content-Disposition
     const contentType = response.headers.get('Content-Type');
