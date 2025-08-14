@@ -1,0 +1,15 @@
+{
+  "name": "eo-pages-func-reverse-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "edgeone pages dev"
+  },
+  "keywords": [],
+  "author": "MadDogOwner",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.19.4",
+    "edgeone": "^1.0.27"
+  }
+}

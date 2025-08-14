@@ -1,0 +1,11 @@
+{
+  "headers": [],
+  "redirects": [],
+  "rewrites": [],
+  "caches": [
+    {
+      "source": "/*",
+      "cacheTtl": 600
+    }
+  ]
+}
